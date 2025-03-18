@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, Alert, TextInput, Modal } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Alert, TextInput, Modal, AppState, Linking, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; // If using Expo
+import { CameraView, useCameraPermissions } from 'expo-camera';
 
 const MainMenu = ({ navigation }) => {
   const showFeatureNotAvailableAlert = () => {
@@ -40,6 +41,26 @@ const ScanQRCode = ({ navigation }) => {
   const [chassisNumber, setChassisNumber] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [carInfo, setCarInfo] = useState({ chassis: '', color: '', engine: '' });
+  const [permission, requestPermission] = useCameraPermissions();
+  const qrLock = useRef(false);
+  const appState = useRef(AppState.currentState);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", (nextAppState) => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === "active"
+      ) {
+        qrLock.current = false;
+      }
+      appState.current = nextAppState;
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   const showCarInfo = () => {
     if (chassisNumber.trim() !== '') {
@@ -54,6 +75,21 @@ const ScanQRCode = ({ navigation }) => {
     }
   };
 
+  if (!permission) {
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
+        <TouchableOpacity onPress={requestPermission} style={styles.button}>
+          <Text>Grant Permission</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.qrContainer}>
       {/* Header */}
@@ -62,11 +98,37 @@ const ScanQRCode = ({ navigation }) => {
       </View>
 
       <Text style={styles.qrTitle}>Scan QR Code</Text>
-      <View style={styles.qrBox}>
-        <TouchableOpacity onPress={() => Alert.alert('Camera permission required')}>
-          <MaterialCommunityIcons name="camera" size={40} color="black" />
-        </TouchableOpacity>
-      </View>
+      
+      {isCameraOpen ? (
+        <View style={styles.qrBox}>
+          <CameraView
+            style={styles.qrBox}
+            facing="back"
+            onBarcodeScanned={({ data }) => {
+              if (data && !qrLock.current) {
+                qrLock.current = true;
+                setTimeout(async () => {
+                  await Linking.openURL(data);
+                  qrLock.current = false; // Reset lock after opening URL
+                }, 500);
+              }
+            }}
+          />
+          {/* Button to close the camera */}
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setIsCameraOpen(false)}
+          >
+            <Text style={styles.closeText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.qrBox}>
+          <TouchableOpacity onPress={() => setIsCameraOpen(true)}>
+            <MaterialCommunityIcons name="camera" size={40} color="black" />
+          </TouchableOpacity>
+        </View>
+      )}
 
       <Text style={styles.orText}>OR</Text>
       <Text>Manual type chassis no.</Text>
@@ -134,6 +196,7 @@ const ScanQRCode = ({ navigation }) => {
     </View>
   );
 };
+
 
 const Stack = createStackNavigator();
 
@@ -325,5 +388,17 @@ const styles = StyleSheet.create({
   startButtonText: {
     color: 'white', // White text color
     fontWeight: 'bold', // Bold text
+  },
+  closeButton: {
+    position: 'absolute',
+    bottom: 10,
+    alignSelf: 'center',
+    backgroundColor: 'red',
+    padding: 8,
+    borderRadius: 5,
+  },
+  closeText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
