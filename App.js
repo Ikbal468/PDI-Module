@@ -149,138 +149,181 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  // ======================
   // Main Menu Styles
+  // ======================
   containerMenu: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-    paddingTop: 50, // Ensures content does not overlap with status bar
+    flex: 1, // Takes up the entire screen
+    alignItems: 'center', // Centers content horizontally
+    justifyContent: 'center', // Centers content vertically
+    backgroundColor: '#fff', // White background
+    paddingTop: 50, // Adds padding to avoid overlapping with the status bar
   },
-  
-  /* Header section positioned at the top */
+
+  // Header Styles
   header: {
-    width: '85%',
-    backgroundColor: '#E75B26',
-    paddingVertical: 15,
-    alignItems: 'center',
-    position: 'absolute', // Makes the header stick at the top
-    top: 60, // Positions the header at the top
+    width: '85%', // Takes up 85% of the parent width
+    backgroundColor: '#E75B26', // Orange background
+    paddingVertical: 15, // Adds vertical padding
+    alignItems: 'center', // Centers content horizontally
+    position: 'absolute', // Fixes the header at the top
+    top: 60, // Positions the header 60 units from the top
   },
   headerText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontSize: 20, // Large font size
+    fontWeight: 'bold', // Bold text
+    color: '#fff', // White text color
   },
-  
-  /* Menu option styling */
+
+  // Menu Option Styles
   optionBox: {
-    backgroundColor: '#FFE6CC', // Background color of the menu options
-    paddingVertical: 25, // Vertical padding inside the button
-    paddingHorizontal: 40, // Horizontal padding inside the button
-    borderRadius: 10, // Rounded corners for a smooth look
-    marginBottom: 55, // Space between each menu box (Increase to add more space)
-    width: '50%', // Width of the menu box
-    alignItems: 'center', // Centers text inside the button
-    top: 35,
+    backgroundColor: '#FFE6CC', // Light orange background
+    paddingVertical: 25, // Vertical padding inside the box
+    paddingHorizontal: 40, // Horizontal padding inside the box
+    borderRadius: 10, // Rounded corners
+    marginBottom: 55, // Adds space between menu options
+    width: '50%', // Takes up 50% of the parent width
+    alignItems: 'center', // Centers content horizontally
+    top: 35, // Positions the box 35 units from the top
   },
   optionText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000',
-  },
-  
-  /* Footer styling */
-  footer: {
-    position: 'absolute',
-    bottom: 20,
-    fontSize: 12,
-    color: 'gray',
+    fontSize: 18, // Medium font size
+    fontWeight: 'bold', // Bold text
+    color: '#000', // Black text color
   },
 
+  // Footer Styles
+  footer: {
+    position: 'absolute', // Fixes the footer at the bottom
+    bottom: 20, // Positions the footer 20 units from the bottom
+    fontSize: 12, // Small font size
+    color: 'gray', // Gray text color
+  },
+
+  // ======================
   // QR Code Page Styles
+  // ======================
   qrContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
+    flex: 1, // Takes up the entire screen
+    alignItems: 'center', // Centers content horizontally
+    justifyContent: 'center', // Centers content vertically
+    backgroundColor: '#fff', // White background
   },
   qrTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#000',
+    fontSize: 22, // Large font size
+    fontWeight: 'bold', // Bold text
+    color: '#000', // Black text color
   },
   qrBox: {
-    width: 200,
-    height: 200,
-    borderWidth: 2,
-    borderColor: '#000',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 10,
+    width: 200, // Fixed width
+    height: 200, // Fixed height
+    borderWidth: 2, // Adds a border
+    borderColor: '#000', // Black border color
+    alignItems: 'center', // Centers content horizontally
+    justifyContent: 'center', // Centers content vertically
+    marginVertical: 10, // Adds vertical margin
   },
   cameraIcon: {
-    width: 40,
-    height: 40,
+    width: 40, // Fixed width
+    height: 40, // Fixed height
   },
   orText: {
-    fontSize: 16,
-    marginVertical: 10,
+    fontSize: 16, // Medium font size
+    marginVertical: 10, // Adds vertical margin
   },
   dropdownContainer: {
-    width: '80%',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    marginVertical: 10,
+    width: '80%', // Takes up 80% of the parent width
+    borderWidth: 1, // Adds a border
+    borderColor: '#ccc', // Light gray border color
+    marginVertical: 10, // Adds vertical margin
   },
   picker: {
-    width: '100%',
-    height: 50, // Tinggikan picker untuk ruang lebih besar
-    fontSize: 16,
-    textAlign: 'center',
-    color: '#000',
+    width: '100%', // Takes up the full width of the container
+    height: 50, // Fixed height
+    fontSize: 16, // Medium font size
+    textAlign: 'center', // Centers text horizontally
+    color: '#000', // Black text color
   },
   input: {
-    width: '80%',
-    height: 50,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    marginVertical: 10,
+    width: '80%', // Takes up 80% of the parent width
+    height: 50, // Fixed height
+    borderWidth: 1, // Adds a border
+    borderColor: '#ccc', // Light gray border color
+    padding: 10, // Adds padding inside the input
+    marginVertical: 10, // Adds vertical margin
   },
   buttonContainer: {
-    flexDirection: 'row',
-    marginTop: 20,
-    bottom: -30, 
-    justifyContent: 'space-between', // Jika mahu jarak maksimum antara butang
-    gap: 40, // Jika mahu jarak tetap antara butang
+    flexDirection: 'row', // Arranges buttons in a row
+    marginTop: 20, // Adds top margin
+    bottom: -30, // Positions the container 30 units from the bottom
+    justifyContent: 'space-between', // Adds space between buttons
+    gap: 40, // Adds a fixed gap between buttons
   },
   backButton: {
-    width: '23%',
-    backgroundColor: '#ccc',
-    padding: 10,
-    alignItems: 'center', // Pusatkan teks secara mendatar
-    justifyContent: 'center', // Pusatkan teks secara menegak
+    width: '23%', // Takes up 23% of the parent width
+    backgroundColor: '#ccc', // Light gray background
+    padding: 10, // Adds padding
+    alignItems: 'center', // Centers content horizontally
+    justifyContent: 'center', // Centers content vertically
   },
   enterButton: {
-    width: '25%',
-    backgroundColor: '#f4c542',
-    padding: 10,
-    alignItems: 'center', // Pusatkan teks secara mendatar
-    justifyContent: 'center', // Pusatkan teks secara menegak
+    width: '25%', // Takes up 25% of the parent width
+    backgroundColor: '#f4c542', // Yellow background
+    padding: 10, // Adds padding
+    alignItems: 'center', // Centers content horizontally
+    justifyContent: 'center', // Centers content vertically
   },
   buttonText: {
-    textAlign: 'center', 
-    fontWeight: 'bold', 
+    textAlign: 'center', // Centers text horizontally
+    fontWeight: 'bold', // Bold text
   },
 
+  // ======================
   // Modal Styles
-  modalContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' },
-  modalContent: { backgroundColor: '#eee', width: '80%', padding: 20, borderRadius: 10 },
-  modalHeader: { backgroundColor: 'orange', padding: 10, textAlign: 'center', fontWeight: 'bold', fontSize: 18 },
-  modalMessage: { marginTop: 10, fontSize: 14, textAlign: 'center' },
-  modalButtons: { flexDirection: 'row', justifyContent: 'space-around', marginTop: 20 },
-  cancelButton: { borderWidth: 1, padding: 10, width: '40%', alignItems: 'center' },
-  startButton: { backgroundColor: 'orange', padding: 10, width: '40%', alignItems: 'center' },
-  startButtonText: { color: 'white', fontWeight: 'bold' },
+  // ======================
+  modalContainer: {
+    flex: 1, // Takes up the entire screen
+    justifyContent: 'center', // Centers content vertically
+    alignItems: 'center', // Centers content horizontally
+    backgroundColor: 'rgba(0,0,0,0.5)', // Semi-transparent black background
+  },
+  modalContent: {
+    backgroundColor: '#eee', // Light gray background
+    width: '80%', // Takes up 80% of the parent width
+    padding: 20, // Adds padding
+    borderRadius: 10, // Rounded corners
+  },
+  modalHeader: {
+    backgroundColor: 'orange', // Orange background
+    padding: 10, // Adds padding
+    textAlign: 'center', // Centers text horizontally
+    fontWeight: 'bold', // Bold text
+    fontSize: 18, // Medium font size
+  },
+  modalMessage: {
+    marginTop: 10, // Adds top margin
+    fontSize: 14, // Small font size
+    textAlign: 'center', // Centers text horizontally
+  },
+  modalButtons: {
+    flexDirection: 'row', // Arranges buttons in a row
+    justifyContent: 'space-around', // Adds space around buttons
+    marginTop: 20, // Adds top margin
+  },
+  cancelButton: {
+    borderWidth: 1, // Adds a border
+    padding: 10, // Adds padding
+    width: '40%', // Takes up 40% of the parent width
+    alignItems: 'center', // Centers content horizontally
+  },
+  startButton: {
+    backgroundColor: 'orange', // Orange background
+    padding: 10, // Adds padding
+    width: '40%', // Takes up 40% of the parent width
+    alignItems: 'center', // Centers content horizontally
+  },
+  startButtonText: {
+    color: 'white', // White text color
+    fontWeight: 'bold', // Bold text
+  },
 });
