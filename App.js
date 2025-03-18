@@ -75,6 +75,28 @@ const ScanQRCode = ({ navigation }) => {
     }
   };
 
+  const handleQRCodeScanned = ({ data }) => {
+    if (data && !qrLock.current) {
+      qrLock.current = true;
+      try {
+        const scannedData = JSON.parse(data);
+        setCarInfo({
+          model: scannedData.model || "Unknown",
+          engine_no: scannedData.engine_no || "Unknown",
+          chassis_no: scannedData.chassis_no || "Unknown",
+          colour_code: scannedData.colour_code || "Unknown",
+          entry_date: new Date(scannedData.entry_date).toString(),
+        });
+        setModalVisible(true);
+      } catch (error) {
+        Alert.alert("Scan Error", "Invalid QR Code data.");
+      }
+      setTimeout(() => {
+        qrLock.current = false;
+      }, 500);
+    }
+  };
+
   if (!permission) {
     return <View />;
   }
@@ -82,7 +104,9 @@ const ScanQRCode = ({ navigation }) => {
   if (!permission.granted) {
     return (
       <View style={styles.container}>
-        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
+        <Text style={{ textAlign: "center" }}>
+          We need your permission to show the camera
+        </Text>
         <TouchableOpacity onPress={requestPermission} style={styles.button}>
           <Text>Grant Permission</Text>
         </TouchableOpacity>
@@ -104,17 +128,8 @@ const ScanQRCode = ({ navigation }) => {
           <CameraView
             style={styles.qrBox}
             facing="back"
-            onBarcodeScanned={({ data }) => {
-              if (data && !qrLock.current) {
-                qrLock.current = true;
-                setTimeout(async () => {
-                  await Linking.openURL(data);
-                  qrLock.current = false; // Reset lock after opening URL
-                }, 500);
-              }
-            }}
+            onBarcodeScanned={handleQRCodeScanned}
           />
-          {/* Button to close the camera */}
           <TouchableOpacity
             style={styles.closeButton}
             onPress={() => setIsCameraOpen(false)}
@@ -169,10 +184,13 @@ const ScanQRCode = ({ navigation }) => {
       <Modal visible={modalVisible} animationType="slide" transparent>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalHeader}>Start PDI</Text>
-            <Text>Chassis No: {carInfo.chassis}</Text>
-            <Text>Colour: {carInfo.color}</Text>
-            <Text>Engine No: {carInfo.engine}</Text>
+          <Text style={styles.modalHeader}>Start PDI</Text>
+            <Text>Model: {carInfo.model}</Text>
+            <Text>Engine No: {carInfo.engine_no}</Text>
+            <Text>Chassis No: {carInfo.chassis_no}</Text>
+            <Text>Colour Code: {carInfo.colour_code}</Text>
+            <Text>Entry Date: {carInfo.entry_date}</Text>
+
             <Text style={styles.modalMessage}>Confirm to start PDI? Timer will start</Text>
 
             <View style={styles.modalButtons}>
