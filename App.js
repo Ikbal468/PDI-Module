@@ -79,16 +79,33 @@ const ScanQRCode = ({ navigation }) => {
     if (data && !qrLock.current) {
       qrLock.current = true;
       try {
-        const scannedData = JSON.parse(data);
+        console.log("Scanned Data:", data); // Log the scanned data
+  
+        // Convert the plain text data into a JSON object
+        const lines = data.split("\n"); // Split the data by newlines
+        const scannedData = {};
+  
+        lines.forEach((line) => {
+          const [key, value] = line.split(": "); // Split each line by ": "
+          if (key && value) {
+            scannedData[key.trim()] = value.trim(); // Trim whitespace and add to the object
+          }
+        });
+  
+        console.log("Parsed Data:", scannedData); // Log the parsed data
+  
+        // Update the car info state
         setCarInfo({
           model: scannedData.model || "Unknown",
           engine_no: scannedData.engine_no || "Unknown",
           chassis_no: scannedData.chassis_no || "Unknown",
           colour_code: scannedData.colour_code || "Unknown",
-          entry_date: new Date(scannedData.entry_date).toString(),
+          entry_date: new Date(scannedData.entry_date).toString() || "Unknown",
         });
-        setModalVisible(true);
+  
+        setModalVisible(true); // Show the modal
       } catch (error) {
+        console.error("Scan Error:", error); // Log the error
         Alert.alert("Scan Error", "Invalid QR Code data.");
       }
       setTimeout(() => {
@@ -103,12 +120,12 @@ const ScanQRCode = ({ navigation }) => {
 
   if (!permission.granted) {
     return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: "center" }}>
+      <View style={styles.containerPermission}>
+        <Text style={styles.permissionText}>
           We need your permission to show the camera
         </Text>
         <TouchableOpacity onPress={requestPermission} style={styles.button}>
-          <Text>Grant Permission</Text>
+          <Text style={styles.buttonText}>Grant Permission</Text>
         </TouchableOpacity>
       </View>
     );
@@ -214,7 +231,6 @@ const ScanQRCode = ({ navigation }) => {
     </View>
   );
 };
-
 
 const Stack = createStackNavigator();
 
@@ -418,5 +434,32 @@ const styles = StyleSheet.create({
   closeText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+
+  // ======================
+  // Permission Styles
+  // ======================
+  containerPermission: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+    padding: 20,
+  },
+  permissionText: {
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  button: {
+    backgroundColor: '#007AFF', // iOS blue color
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
   },
 });
